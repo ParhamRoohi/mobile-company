@@ -1,0 +1,1319 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
+
+/**
+ *
+ * @author parham
+ */
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+public class UserUi extends javax.swing.JFrame {
+
+    private Login login;
+    private User user;
+    private ArrayList<String> cities;
+    private MobileCompany mobileCompany;
+
+    /**
+     * Creates new form UserUi
+     */
+    public UserUi(Login login, User user, ArrayList<String> city) {
+        this.user = user;
+        this.cities = city;
+        this.login = login;
+
+        initComponents();
+        filterTable();
+        fillTable();
+        cityFiled.setEditable(false);
+        userIDFiled.setText(user.getUserID() + "");
+        userIDFiled.setEditable(false);
+        nameFiled.setText(user.getName());
+        passwordFiled.setText(user.getUserPassword());
+        streetFiled.setText(user.getStreet());
+        streetNumFiled.setText(user.getStreetNum() + "");
+        streetFiled.setText(user.getStreet());
+        suburbFiled.setText(user.getSuburb());
+    }
+
+    public void fillTable() {
+        String[] header = {"Plan ID", "Username", "Model", "Type", "Memory Size", "Handset Price", "Internet Quota", "Caplimit", "Expiry date", "City", "ABN", "NO Employee", "Monthly Payment"};
+        DefaultTableModel model = new DefaultTableModel(header, 0);
+        userInformation.setModel(model);
+        for (MobilePlan plan : user.getPlans().values()) {
+            String[] row = new String[13];
+            row[0] = plan.getId() + "";
+            row[1] = plan.userName;
+            row[2] = plan.getMobileModel();
+            row[3] = plan.handSet.getMobileType().toString();
+            row[4] = plan.handSet.getMemorySize() + "";
+            row[5] = plan.handSet.getPrice() + "";
+            row[6] = plan.internetQuota + "";
+            row[7] = plan.capLimit + "";
+            row[8] = plan.getExpiryDate().toString();
+            if (plan instanceof PersonalPlan) {
+                row[9] = ((PersonalPlan) plan).city;
+                row[10] = "";
+                row[11] = "";
+            } else {
+                row[9] = "";
+                row[10] = ((BusinessPlan) plan).ABN + "";
+            }
+            row[12] = String.format("$%.2f", plan.calcPay(10));
+            model.addRow(row);
+
+        }
+    }
+
+    public void filterTable() {
+        ArrayList<MobilePlan> shallowCopyPlans = user.shallowCopyPlans();
+        try {
+            if (!modelField.getText().isEmpty()) {
+                shallowCopyPlans = MobilePlan.filterByMobileModel(shallowCopyPlans, modelField.getText());
+            }
+            if (!dateField.getText().isEmpty()) {
+                String[] field = dateField.getText().split("/");
+                int year = Integer.parseInt(field[0]);
+                int month = Integer.parseInt(field[1]);
+                int day = Integer.parseInt(field[2]);
+                MyDate date = new MyDate(year, month, day);
+                shallowCopyPlans = MobilePlan.filterByExpiryDate(shallowCopyPlans, date);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e);
+        }
+        if (sort.isSelected()) {
+            Collections.sort(shallowCopyPlans);
+        }
+        String[] header = {"usename", "Plan ID", "Model", "Type", "Memory Size", "Handset Price", "Internet Quota", "Caplimit", "Expiry date", "City", "ABN", "NO Employee", "Monthly Payment"};
+        DefaultTableModel model = new DefaultTableModel(header, 0);
+        filterTabel.setModel(model);
+        for (MobilePlan plan : shallowCopyPlans) {
+            String[] row = new String[13];
+            row[0] = plan.userName;
+            row[1] = plan.getId() + "";
+            row[2] = plan.getMobileModel();
+            row[3] = plan.handSet.getMobileType().toString();
+            row[4] = plan.handSet.getMemorySize() + "";
+            row[5] = plan.handSet.getPrice() + "";
+            row[6] = plan.internetQuota + "";
+            row[7] = plan.capLimit + "";
+            row[8] = plan.getExpiryDate().toString();
+            if (plan instanceof PersonalPlan) {
+                row[9] = ((PersonalPlan) plan).city;
+                row[10] = "";
+                row[11] = "";
+            } else {
+                row[9] = "";
+                row[10] = ((BusinessPlan) plan).ABN + "";
+            }
+            row[12] = String.format("$%.2f", plan.calcPay(10));
+            model.addRow(row);
+
+        }
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        plansTextArea = new javax.swing.JTextArea();
+        planIDLabel = new javax.swing.JLabel();
+        planTextField = new javax.swing.JTextField();
+        findButton = new javax.swing.JButton();
+        LogoutButton = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        userInformation = new javax.swing.JTable();
+        deleteButton = new javax.swing.JButton();
+        updateButton = new javax.swing.JButton();
+        logoutButton4 = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        nameFiled = new javax.swing.JTextField();
+        cityFiled = new javax.swing.JTextField();
+        passwordFiled = new javax.swing.JTextField();
+        streetNumFiled = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        userIDLabel = new javax.swing.JLabel();
+        nameLabel = new javax.swing.JLabel();
+        passwordLabel = new javax.swing.JLabel();
+        streerNumLabel = new javax.swing.JLabel();
+        streetLabel = new javax.swing.JLabel();
+        cityLabel = new javax.swing.JLabel();
+        userIDFiled = new javax.swing.JTextField();
+        streetFiled = new javax.swing.JTextField();
+        suburbLabel = new javax.swing.JLabel();
+        suburbFiled = new javax.swing.JTextField();
+        editButton = new javax.swing.JButton();
+        cityComboBox = new javax.swing.JComboBox<>();
+        newCityCheckBox = new javax.swing.JCheckBox();
+        logoutButton1 = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        cityOrABNLable = new javax.swing.JLabel();
+        numberLabel = new javax.swing.JLabel();
+        usernameTextField = new javax.swing.JTextField();
+        planIDTextField = new javax.swing.JTextField();
+        memoryTextField = new javax.swing.JTextField();
+        modelTextField = new javax.swing.JTextField();
+        monthTextField = new javax.swing.JTextField();
+        dayTextField = new javax.swing.JTextField();
+        priceTextField = new javax.swing.JTextField();
+        capLimitTextField = new javax.swing.JTextField();
+        internetTextField = new javax.swing.JTextField();
+        typeComboBox = new javax.swing.JComboBox<>();
+        yearTextField = new javax.swing.JTextField();
+        cityOrABNTextField = new javax.swing.JTextField();
+        numberTextField = new javax.swing.JTextField();
+        addButton = new javax.swing.JButton();
+        businessButton = new javax.swing.JRadioButton();
+        personalPlan = new javax.swing.JRadioButton();
+        clearButton = new javax.swing.JButton();
+        logoutButton2 = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        mobileLabel = new javax.swing.JLabel();
+        dateLabel = new javax.swing.JLabel();
+        filterButten = new javax.swing.JButton();
+        modelField = new javax.swing.JTextField();
+        dateField = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        filterTabel = new javax.swing.JTable();
+        sort = new javax.swing.JCheckBox();
+        logoutButton3 = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        plansTextArea.setColumns(20);
+        plansTextArea.setRows(5);
+        jScrollPane3.setViewportView(plansTextArea);
+
+        planIDLabel.setText("plan ID");
+
+        planTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                planTextFieldActionPerformed(evt);
+            }
+        });
+
+        findButton.setText("Find");
+        findButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                findButtonActionPerformed(evt);
+            }
+        });
+
+        LogoutButton.setText("Logout");
+        LogoutButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                LogoutButtonMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane3)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(82, 82, 82)
+                .addComponent(planIDLabel)
+                .addGap(27, 27, 27)
+                .addComponent(planTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(508, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(46, 46, 46)
+                .addComponent(findButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(LogoutButton)
+                .addGap(238, 238, 238))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(planTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(planIDLabel))
+                .addGap(39, 39, 39)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(68, 68, 68)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(findButton)
+                    .addComponent(LogoutButton))
+                .addContainerGap(148, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("find Plan", jPanel2);
+
+        userInformation.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(userInformation);
+
+        deleteButton.setText("delete");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
+
+        updateButton.setText("update");
+        updateButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateButtonActionPerformed(evt);
+            }
+        });
+
+        logoutButton4.setText("Logout");
+        logoutButton4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoutButton4MouseClicked(evt);
+            }
+        });
+        logoutButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logoutButton4ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(104, 104, 104)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(158, 158, 158)
+                        .addComponent(deleteButton)
+                        .addGap(125, 125, 125)
+                        .addComponent(updateButton)
+                        .addGap(113, 113, 113)
+                        .addComponent(logoutButton4)))
+                .addContainerGap(171, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(51, 51, 51)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(78, 78, 78)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(deleteButton)
+                    .addComponent(updateButton)
+                    .addComponent(logoutButton4))
+                .addContainerGap(159, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("plan Information", jPanel4);
+
+        nameFiled.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nameFiledActionPerformed(evt);
+            }
+        });
+
+        cityFiled.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cityFiledActionPerformed(evt);
+            }
+        });
+
+        passwordFiled.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passwordFiledActionPerformed(evt);
+            }
+        });
+
+        streetNumFiled.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                streetNumFiledActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        jLabel1.setText("Adress information");
+
+        userIDLabel.setText("user ID");
+
+        nameLabel.setText("name");
+
+        passwordLabel.setText("password");
+
+        streerNumLabel.setText("steet Number");
+
+        streetLabel.setText("street");
+
+        cityLabel.setText("city");
+
+        streetFiled.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                streetFiledActionPerformed(evt);
+            }
+        });
+
+        suburbLabel.setText("suburb");
+
+        suburbFiled.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                suburbFiledActionPerformed(evt);
+            }
+        });
+
+        editButton.setText("Edit");
+        editButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editButtonActionPerformed(evt);
+            }
+        });
+
+        cityComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "wollengang", "newYork" }));
+
+        newCityCheckBox.setText("New city");
+        newCityCheckBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                newCityCheckBoxItemStateChanged(evt);
+            }
+        });
+
+        logoutButton1.setText("Logout");
+        logoutButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoutButton1MouseClicked(evt);
+            }
+        });
+        logoutButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logoutButton1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(passwordLabel)
+                                    .addComponent(nameLabel)
+                                    .addComponent(userIDLabel))
+                                .addGap(40, 40, 40)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(nameFiled, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(userIDFiled, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(passwordFiled, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(suburbLabel)
+                                    .addComponent(cityLabel))
+                                .addGap(45, 45, 45)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(suburbFiled, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
+                                    .addComponent(cityComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(42, 42, 42)
+                                .addComponent(cityFiled, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(42, 42, 42)
+                                .addComponent(newCityCheckBox))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                    .addComponent(streetLabel)
+                                    .addGap(53, 53, 53)
+                                    .addComponent(streetFiled, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(streerNumLabel)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(streetNumFiled, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(6, 6, 6)))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(88, 88, 88)
+                        .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(228, 228, 228)
+                        .addComponent(logoutButton1)))
+                .addContainerGap(292, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(userIDFiled, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(userIDLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nameFiled, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nameLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(passwordFiled, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(passwordLabel))
+                .addGap(42, 42, 42)
+                .addComponent(jLabel1)
+                .addGap(23, 23, 23)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(streerNumLabel)
+                    .addComponent(streetNumFiled, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(streetFiled, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(streetLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(suburbFiled, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(suburbLabel))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cityLabel)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(cityComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(newCityCheckBox)
+                                .addComponent(cityFiled, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(logoutButton1)
+                            .addComponent(editButton))
+                        .addGap(349, 349, 349))))
+        );
+
+        jTabbedPane1.addTab("Edit user", jPanel1);
+
+        jLabel2.setText("username");
+
+        jLabel3.setText("plan ID");
+
+        jLabel4.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        jLabel4.setText("mobile phone");
+
+        jLabel5.setText("Model ");
+
+        jLabel6.setText("Type");
+
+        jLabel7.setText("Memory Size");
+
+        jLabel8.setText("Price");
+
+        jLabel9.setText("internet Quota");
+
+        jLabel10.setText("Cap Limit");
+
+        jLabel11.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        jLabel11.setText("Expiry Date");
+
+        jLabel12.setText("Day");
+
+        jLabel13.setText("Month");
+
+        jLabel14.setText("Year");
+
+        cityOrABNLable.setText("City");
+
+        numberLabel.setText("NO.Employee");
+
+        usernameTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                usernameTextFieldActionPerformed(evt);
+            }
+        });
+
+        planIDTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                planIDTextFieldActionPerformed(evt);
+            }
+        });
+
+        memoryTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                memoryTextFieldActionPerformed(evt);
+            }
+        });
+
+        modelTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modelTextFieldActionPerformed(evt);
+            }
+        });
+
+        monthTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                monthTextFieldActionPerformed(evt);
+            }
+        });
+
+        dayTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dayTextFieldActionPerformed(evt);
+            }
+        });
+
+        priceTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                priceTextFieldActionPerformed(evt);
+            }
+        });
+
+        capLimitTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                capLimitTextFieldActionPerformed(evt);
+            }
+        });
+
+        typeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ios", "Windows", "Android" }));
+
+        yearTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                yearTextFieldActionPerformed(evt);
+            }
+        });
+
+        cityOrABNTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cityOrABNTextFieldActionPerformed(evt);
+            }
+        });
+
+        addButton.setText("ADD");
+        addButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addButtonActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(businessButton);
+        businessButton.setText("Business Plan");
+        businessButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                businessButtonActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(personalPlan);
+        personalPlan.setText("personal Plan");
+        personalPlan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                personalPlanActionPerformed(evt);
+            }
+        });
+
+        clearButton.setText("clear");
+        clearButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearButtonActionPerformed(evt);
+            }
+        });
+
+        logoutButton2.setText("Logout");
+        logoutButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoutButton2MouseClicked(evt);
+            }
+        });
+        logoutButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logoutButton2ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(76, 76, 76)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(addButton)
+                        .addGap(94, 94, 94)
+                        .addComponent(clearButton)
+                        .addGap(92, 92, 92)
+                        .addComponent(logoutButton2)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel12)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(usernameTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                                            .addComponent(planIDTextField, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(modelTextField)
+                                            .addComponent(typeComboBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(capLimitTextField)
+                                            .addComponent(dayTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                                            .addComponent(monthTextField)
+                                            .addComponent(yearTextField)
+                                            .addComponent(cityOrABNTextField)
+                                            .addComponent(numberTextField)
+                                            .addComponent(internetTextField)
+                                            .addComponent(priceTextField)
+                                            .addComponent(memoryTextField)))))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel13)
+                                    .addComponent(cityOrABNLable)
+                                    .addComponent(jLabel14)
+                                    .addComponent(numberLabel))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(88, 88, 88)
+                        .addComponent(businessButton)
+                        .addGap(33, 33, 33)
+                        .addComponent(personalPlan)
+                        .addGap(88, 88, 88))))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(39, 39, 39)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(usernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(businessButton)
+                    .addComponent(personalPlan))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(planIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel4)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(modelTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(typeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(47, 47, 47)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(memoryTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(priceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(internetTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(capLimitTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel11)
+                .addGap(25, 25, 25)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(dayTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(monthTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel14)
+                    .addComponent(yearTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cityOrABNLable)
+                    .addComponent(cityOrABNTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(numberLabel)
+                    .addComponent(numberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addButton)
+                    .addComponent(clearButton)
+                    .addComponent(logoutButton2))
+                .addGap(17, 17, 17))
+        );
+
+        jTabbedPane1.addTab("Add Plan", jPanel3);
+
+        mobileLabel.setText("Mobile model");
+
+        dateLabel.setText("Expiry Date");
+
+        filterButten.setText("Filter");
+        filterButten.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                filterButtenActionPerformed(evt);
+            }
+        });
+
+        modelField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modelFieldActionPerformed(evt);
+            }
+        });
+        modelField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                modelFieldKeyReleased(evt);
+            }
+        });
+
+        dateField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dateFieldActionPerformed(evt);
+            }
+        });
+
+        filterTabel.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(filterTabel);
+
+        sort.setText("sort by username");
+        sort.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sortActionPerformed(evt);
+            }
+        });
+
+        logoutButton3.setText("Logout");
+        logoutButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoutButton3MouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addGap(0, 420, Short.MAX_VALUE)
+                .addComponent(sort)
+                .addGap(223, 223, 223))
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(91, 91, 91)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(mobileLabel)
+                            .addComponent(dateLabel))
+                        .addGap(43, 43, 43)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(dateField, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
+                            .addComponent(modelField)))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(178, 178, 178)
+                        .addComponent(filterButten)
+                        .addGap(142, 142, 142)
+                        .addComponent(logoutButton3)))
+                .addContainerGap(324, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(51, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(mobileLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(modelField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(61, 61, 61))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addComponent(sort)
+                        .addGap(2, 2, 2)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(dateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(dateLabel))))
+                .addGap(51, 51, 51)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(filterButten)
+                    .addComponent(logoutButton3))
+                .addGap(71, 71, 71))
+        );
+
+        jTabbedPane1.addTab("Filter plan", jPanel5);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jTabbedPane1)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(21, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 771, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void streetNumFiledActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_streetNumFiledActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_streetNumFiledActionPerformed
+
+    private void passwordFiledActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFiledActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_passwordFiledActionPerformed
+
+    private void streetFiledActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_streetFiledActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_streetFiledActionPerformed
+
+    private void cityFiledActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cityFiledActionPerformed
+        String city = cityFiled.getText();
+        cityComboBox.add(city, sort);
+    }//GEN-LAST:event_cityFiledActionPerformed
+
+    private void suburbFiledActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_suburbFiledActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_suburbFiledActionPerformed
+
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
+        try {
+            user.setName(nameFiled.getName());
+            user.setPass(passwordFiled.getText());
+            user.setStreetNum(Integer.parseInt(streetNumFiled.getText()));
+            user.setStreet(streetFiled.getText());
+            user.setSuburb(suburbFiled.getText());
+            if (newCityCheckBox.isSelected()) {
+                this.user.getAddress().setCity(this.cityFiled.getText());
+                if (cityComboBox.getModel().toString().equalsIgnoreCase(cityFiled.getText()));
+                this.cities.add(this.cityFiled.getText());
+                this.cityComboBox.setModel(new DefaultComboBoxModel<>(this.cities.toArray(String[]::new)));
+                this.cityComboBox.setSelectedItem(this.cityFiled.getText());
+            } else {
+                this.user.getAddress().setCity((String) this.cityFiled.getText());
+                this.cityFiled.setText(this.user.getCity());
+            }
+            JOptionPane.showMessageDialog(this, " The plan was edited ");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e);
+        }
+    }//GEN-LAST:event_editButtonActionPerformed
+
+    private void dateFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dateFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dateFieldActionPerformed
+
+    private void modelFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modelFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_modelFieldActionPerformed
+
+    private void sortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sortActionPerformed
+        filterTable();
+    }//GEN-LAST:event_sortActionPerformed
+
+    private void filterButtenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filterButtenActionPerformed
+        filterTable();
+    }//GEN-LAST:event_filterButtenActionPerformed
+
+    private void modelFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_modelFieldKeyReleased
+        filterTable();
+    }//GEN-LAST:event_modelFieldKeyReleased
+
+    private void usernameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_usernameTextFieldActionPerformed
+
+    private void planIDTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_planIDTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_planIDTextFieldActionPerformed
+
+    private void memoryTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_memoryTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_memoryTextFieldActionPerformed
+
+    private void modelTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modelTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_modelTextFieldActionPerformed
+
+    private void priceTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_priceTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_priceTextFieldActionPerformed
+
+    private void capLimitTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_capLimitTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_capLimitTextFieldActionPerformed
+
+    private void dayTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dayTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dayTextFieldActionPerformed
+
+    private void yearTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yearTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_yearTextFieldActionPerformed
+
+    private void cityOrABNTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cityOrABNTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cityOrABNTextFieldActionPerformed
+
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
+        int planID = Integer.parseInt(planIDTextField.getText());
+        String username = usernameTextField.getText();
+        String model = modelTextField.getText();
+        MobileType type = MobileType.valueOf(typeComboBox.getSelectedItem().toString());
+        int size = Integer.parseInt(memoryTextField.getText());
+        double price = Double.parseDouble(priceTextField.getText());
+        int Internrt = Integer.parseInt(internetTextField.getText());
+        int capLimit = Integer.parseInt(capLimitTextField.getText());
+        int day = Integer.parseInt(dayTextField.getText());
+        int month = Integer.parseInt(monthTextField.getText());
+        int year = Integer.parseInt(yearTextField.getText());
+        MyDate date = new MyDate(year, month, day);
+        MobilePhone phone = new MobilePhone(model, type, size, price);
+        if (personalPlan.isSelected()) {
+            String city = cityOrABNTextField.getText();
+            try {
+                UiMethod.addPersonalPlan(user, username, planID, phone, Internrt, capLimit, date, city);
+                JOptionPane.showMessageDialog(this, " plan was added ");
+            } catch (PlanException e) {
+                JOptionPane.showMessageDialog(this, " plan can not be added, wrong plan ID ");
+            } catch (UNException e) {
+                JOptionPane.showMessageDialog(this, " plan can not be added, wrong username ");
+            }
+
+        } else {
+            int abn = Integer.parseInt(cityOrABNTextField.getText());
+            int noEmp = Integer.parseInt(numberTextField.getText());
+            try {
+                UiMethod.addBusinessPlan(user, username, planID, phone, Internrt, capLimit, date, noEmp, abn);
+                JOptionPane.showMessageDialog(this, " plan was added ");
+            } catch (PlanException e) {
+                JOptionPane.showMessageDialog(this, " plan can not be added, wrong plan ID ");
+            } catch (UNException e) {
+                JOptionPane.showMessageDialog(this, " plan can not be added, wrong username ");
+
+            }
+        }
+
+        filterTable();
+        fillTable();
+        clear();
+    }//GEN-LAST:event_addButtonActionPerformed
+    public void clear() {
+        planIDTextField.setText("");
+        numberTextField.setText("");
+        cityOrABNTextField.setText("");
+        yearTextField.setText("");
+        monthTextField.setText("");
+        dayTextField.setText("");
+        capLimitTextField.setText("");
+        internetTextField.setText("");
+        priceTextField.setText("");
+        memoryTextField.setText("");
+        modelTextField.setText("");
+        usernameTextField.setText("");
+    }
+    private void monthTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monthTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_monthTextFieldActionPerformed
+
+    private void businessButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_businessButtonActionPerformed
+        cityOrABNLable.setText("ABN");
+        cityOrABNLable.setVisible(true);
+        numberLabel.setVisible(true);
+        numberTextField.setVisible(true);
+    }//GEN-LAST:event_businessButtonActionPerformed
+
+    private void personalPlanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_personalPlanActionPerformed
+        numberTextField.setVisible(false);
+        cityOrABNLable.setText("City");
+        numberLabel.setVisible(false);
+        cityOrABNTextField.setVisible(true);
+    }//GEN-LAST:event_personalPlanActionPerformed
+
+    private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
+        clear();
+    }//GEN-LAST:event_clearButtonActionPerformed
+
+    private void planTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_planTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_planTextFieldActionPerformed
+
+    private void findButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findButtonActionPerformed
+        try {
+            MobilePlan plan = user.findPlan(Integer.parseInt(planTextField.getText()));
+            if (plan != null) {
+                plansTextArea.append(plan.toString() + " \n ");
+            } else {
+                plansTextArea.append(" plan with this plan ID " + planTextField.getText() + " isn't find. \n ");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e);
+        }
+    }//GEN-LAST:event_findButtonActionPerformed
+
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        int line = userInformation.getSelectedRow();
+        if (line >= 0) {
+            int id = Integer.parseInt(userInformation.getValueAt(line, 0).toString());
+            user.getPlans().remove(id);
+            fillTable();
+            JOptionPane.showMessageDialog(this, " The plan was deleted ");
+        }
+    }//GEN-LAST:event_deleteButtonActionPerformed
+
+    private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
+        int line = userInformation.getSelectedRow();
+        if (line >= 0) {
+            Object[] keys = user.getPlans().keySet().toArray();
+            int planID = (int) keys[line];
+            UpdateUI updateUI = new UpdateUI(user.getPlans().get(planID), this);
+            updateUI.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, " The selected plan does not exist ");
+        }
+    }//GEN-LAST:event_updateButtonActionPerformed
+
+    private void logoutButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButton1ActionPerformed
+        this.dispose();
+        login.save();
+        login.setVisible(true);
+    }//GEN-LAST:event_logoutButton1ActionPerformed
+
+    private void logoutButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutButton1MouseClicked
+        this.dispose();
+        login.save();
+        login.setVisible(true);
+    }//GEN-LAST:event_logoutButton1MouseClicked
+
+    private void LogoutButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LogoutButtonMouseClicked
+        this.dispose();
+        login.save();
+        login.setVisible(true);
+    }//GEN-LAST:event_LogoutButtonMouseClicked
+
+    private void logoutButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButton2ActionPerformed
+        this.dispose();
+        login.save();
+        login.setVisible(true);
+    }//GEN-LAST:event_logoutButton2ActionPerformed
+
+    private void logoutButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutButton2MouseClicked
+        this.dispose();
+        login.save();
+        login.setVisible(true);
+    }//GEN-LAST:event_logoutButton2MouseClicked
+
+    private void logoutButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutButton3MouseClicked
+        this.dispose();
+        login.save();
+        login.setVisible(true);
+    }//GEN-LAST:event_logoutButton3MouseClicked
+
+    private void logoutButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButton4ActionPerformed
+        this.dispose();
+        login.save();
+        login.setVisible(true);    }//GEN-LAST:event_logoutButton4ActionPerformed
+
+    private void logoutButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutButton4MouseClicked
+        this.dispose();
+        login.save();
+        login.setVisible(true);
+    }//GEN-LAST:event_logoutButton4MouseClicked
+
+    private void nameFiledActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameFiledActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nameFiledActionPerformed
+
+    private void newCityCheckBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_newCityCheckBoxItemStateChanged
+        if (newCityCheckBox.isSelected()) {
+            cityFiled.setEditable(true);
+        } else {
+            cityFiled.setEditable(false);
+        }
+    }//GEN-LAST:event_newCityCheckBoxItemStateChanged
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(UserUi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(UserUi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(UserUi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(UserUi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                //new UserUi().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton LogoutButton;
+    private javax.swing.JButton addButton;
+    private javax.swing.JRadioButton businessButton;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JTextField capLimitTextField;
+    private javax.swing.JComboBox<String> cityComboBox;
+    private javax.swing.JTextField cityFiled;
+    private javax.swing.JLabel cityLabel;
+    private javax.swing.JLabel cityOrABNLable;
+    private javax.swing.JTextField cityOrABNTextField;
+    private javax.swing.JButton clearButton;
+    private javax.swing.JTextField dateField;
+    private javax.swing.JLabel dateLabel;
+    private javax.swing.JTextField dayTextField;
+    private javax.swing.JButton deleteButton;
+    private javax.swing.JButton editButton;
+    private javax.swing.JButton filterButten;
+    private javax.swing.JTable filterTabel;
+    private javax.swing.JButton findButton;
+    private javax.swing.JTextField internetTextField;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JButton logoutButton1;
+    private javax.swing.JButton logoutButton2;
+    private javax.swing.JButton logoutButton3;
+    private javax.swing.JButton logoutButton4;
+    private javax.swing.JTextField memoryTextField;
+    private javax.swing.JLabel mobileLabel;
+    private javax.swing.JTextField modelField;
+    private javax.swing.JTextField modelTextField;
+    private javax.swing.JTextField monthTextField;
+    private javax.swing.JTextField nameFiled;
+    private javax.swing.JLabel nameLabel;
+    private javax.swing.JCheckBox newCityCheckBox;
+    private javax.swing.JLabel numberLabel;
+    private javax.swing.JTextField numberTextField;
+    private javax.swing.JTextField passwordFiled;
+    private javax.swing.JLabel passwordLabel;
+    private javax.swing.JRadioButton personalPlan;
+    private javax.swing.JLabel planIDLabel;
+    private javax.swing.JTextField planIDTextField;
+    private javax.swing.JTextField planTextField;
+    private javax.swing.JTextArea plansTextArea;
+    private javax.swing.JTextField priceTextField;
+    private javax.swing.JCheckBox sort;
+    private javax.swing.JLabel streerNumLabel;
+    private javax.swing.JTextField streetFiled;
+    private javax.swing.JLabel streetLabel;
+    private javax.swing.JTextField streetNumFiled;
+    private javax.swing.JTextField suburbFiled;
+    private javax.swing.JLabel suburbLabel;
+    private javax.swing.JComboBox<String> typeComboBox;
+    private javax.swing.JButton updateButton;
+    private javax.swing.JTextField userIDFiled;
+    private javax.swing.JLabel userIDLabel;
+    private javax.swing.JTable userInformation;
+    private javax.swing.JTextField usernameTextField;
+    private javax.swing.JTextField yearTextField;
+    // End of variables declaration//GEN-END:variables
+}

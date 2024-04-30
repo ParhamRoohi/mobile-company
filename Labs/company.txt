@@ -1,0 +1,4 @@
+apple,admin,admin,2,2,parham,1,22,haft e tir,Ab o bargh,mashhad,admin,2, bP ,USR000000U,3000001,x24,Windows,128,7000.0,86,45,2023,6,17,56,9, pP ,USR000001U,3000002,iphone 12,Ios,128,9000.0,9,88,2026,5,26,tehran 
+ ,sepehr,2,24,jomhori,tehran,tehran,parham@roohi,2, bP ,USR000003U,3000004, Iphone 13 ,Ios,512,5000.0,45,12,2023,8,19,90,98, pP ,USR000002U,3000003, s23 ,Android,256,2000.0,87,77,2002,4,15,mashhad 
+  
+ 
